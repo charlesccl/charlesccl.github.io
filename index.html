@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet" type='text/css'>
+</head>
+
+<body>
+    <div class=''>
+        <div class="toolBar">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    File
+                </button>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <a class="dropdown-item bg-light fa fa-download fa-1x" id="save-PNG">Save as PNG</a>
+                <a class="dropdown-item bg-light fa fa-download fa-1x" id="save-JPEG">Save as JPEG</a>
+                <a class="dropdown-item">
+                    <input type="file" class="btn" id="upload-image">
+                </a>
+            </div>
+            <ul class="flex-container-row">
+                <li class="fa fa-pencil fa-2x tool-item" aria-hidden="true" id="drawing-line"></li>
+                <li class="tool-item" aria-hidden="true" id="drawing-Q-curve">
+                    <img src="img/tool/q-curve.png">
+                </li>
+                <li class="tool-item" aria-hidden="true" id="drawing-Bcurve">
+                    <img src="img/tool/b-curve.png">
+                </li>
+                <li class="fa fa-paint-brush fa-2x tool-item" aria-hidden="true" id="brush-radial-gradient"></li>
+                <li id="drawing-stline">
+                    <img src="img/tool/line.png">
+                </li>
+                <li class="fa fa-square fa-2x tool-item" aria-hidden="true" id="drawing-rectangle"></li>
+                <li class="fa fa-circle fa-2x tool-item" aria-hidden="true" id="drawing-circle"></li>
+                <li id="drawing-oval" aria-hidden="true" class="tool-item">
+                    <img src="img/tool/oval.png">
+                </li>
+                <li id="drawing-polygon" aria-hidden="true" class="tool-item">
+                    <img src="img/tool/polygon.png">
+                </li>
+                <li class="fa fa-flask fa-2x tool-item" aria-hidden="true" id="color-bucket"></li>
+                <li class="fa fa-eyedropper fa-2x tool-item" aria-hidden="true" id="dropper"></li>
+                <li class="fa fa fa-cut fa-2x tool-item" aria-hidden="true" id="capture"></li>
+                <li class="fa fa-eraser fa-2x tool-item" aria-hidden="true" id="erasing"></li>
+                <li class="fa fa-trash fa-2x tool-item" aria-hidden="true" id="clearing"></li>
+                <li class="fa fa-undo fa-2x tool-item" aria-hidden="true" id="undo"></li>
+                <li class="fa fa-repeat fa-2x tool-item" aria-hidden="true" id="redo"></li>
+                <li class="tool-item">
+                    <input name="color2" type="hidden" id="color_value" value="000">
+                    <button class="jscolor {valueElement: 'color_value'}" style="width: 30px; height:30px;">
+                    </button>
+                </li>
+                
+                <div class="slidecontainer">
+                    <span>
+                        <i class="fa fa-minus fa-1x" aria-hidden="true"></i>
+                    </span>
+                    <input type="range" min="1" max="15" value="3" class="slider" id="line-width">
+                    <span>
+                        <i class="fa fa-plus fa-1x" aria-hidden="true"></i>
+                    </span>
+                    <p>Width:
+                        <span id="lineWidth"></span>
+                    </p>
+                </div>
+                <div class="slidecontainer">
+                    <span>
+                        <i class="fa fa-minus fa-1x" aria-hidden="true"></i>
+                    </span>
+                    <input type="range" min="1" max="30" value="3" class="slider" id="sides">
+                    <span>
+                        <i class="fa fa-plus fa-1x" aria-hidden="true"></i>
+                    </span>
+                    <p>Side(s):
+                        <span id="sideValue"></span>
+                    </p>
+                </div>
+            </ul>
+        </div>
+        <div class="col-sm-11">
+            <div id="canvas-container"> 
+                <canvas id="canvas-real" class="canvas" width='1200px' height='720px'></canvas>
+                <canvas id="canvas-draft" class="canvas" width='1200px' height='720px'></canvas>
+            </div>
+        </div>
+        </div>
+    </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>    
+        <script type='text/javascript' src="js/canvas-common.js"></script>
+        <script type='text/javascript' src="js/drawing-line.js"></script>
+        <script type='text/javascript' src="js/drawing-stline.js"></script>
+        <script type='text/javascript' src="js/drawing-rectangle.js"></script>
+        <script type='text/javascript' src="js/drawing-polygon.js"></script>
+        <script type='text/javascript' src="js/drawing-circle.js"></script>
+        <script type='text/javascript' src="js/drawing-oval.js"></script>
+        <script type='text/javascript' src="js/color-bucket.js"></script>
+        <script type='text/javascript' src="js/clearing-all.js"></script>
+        <script type='text/javascript' src="js/controlPoint.js"></script>
+        <script type='text/javascript' src="js/eraser.js"></script>
+        <script type='text/javascript' src="js/functionSelector.js"></script>
+        <script type='text/javascript' src="js/color-selector.js"></script>
+        <script type='text/javascript' src="js/upload-image.js"></script>
+        <script type='text/javascript' src="js/save.js"></script>
+        <script type='text/javascript' src="js/color-dropper.js"></script>
+        <script type='text/javascript' src="js/jscolor.min.js"></script>
+        <script type='text/javascript' src="js/slider.js"></script>
+        <script type='text/javascript' src="js/brush-radial-gradient.js"></script>
+        <script type='text/javascript' src="js/cursor.js"></script>
+        <script type='text/javascript' src="js/resize-window.js"></script>
+        <script type='text/javascript' src="js/redo.js"></script>
+        <script type='text/javascript' src="js/capture.js"></script>
+        <script type='text/javascript' src="js/drawing-q-curve.js"></script>
+        <script type='text/javascript' src="js/drawing-Bcurve.js"></script>
+        <script type='text/javascript' src="js/drawing-Bcurve.js"></script>
+            
+</body>
+
